@@ -1,0 +1,19 @@
+; 2.1 c = a + b
+
+.data@0x6C:
+	DB	1
+	DB	2
+
+;; The program starts from 0xA0
+.entry@0xA0:
+	LOADB	R5, 0x6C
+	LOADB	R2, 0x01
+	LOADM	R6, 0x6D
+	STOREM	R6, 0xFF
+	STOREM	R5, 0xFF
+	STOREM	R2, 0xFF
+	STOREM	R6, 0xFF
+	LOADB	R5, 0x6F
+	STOREM	R5, 0xFF
+	STOREM	R0, 0xFF
+	HALT
