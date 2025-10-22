@@ -1,0 +1,47 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nodejs npm php make node-grunt-cli
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build project
+        run: grunt
+
+      - name: Build and install cucu module
+        run: |
+          cd cucu
+          make install
+          cd ..
+      
+      - name: Prepare examples
+        run: |
+          cd examples
+          php scandir.php > examples.json
+          cd ..
+      
+      - name: Others
+        run: |
+          rm assets/.gitignore
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .

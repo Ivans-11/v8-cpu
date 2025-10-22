@@ -150,17 +150,15 @@ app.controller('Ctrl', ['$document', '$scope', '$timeout', '$http', 'cpu', 'memo
     };
     
     $scope.initExamples = function() {
-        var response = $http.get('examples/scandir.php');
-        response.success(function(data, status, headers, config) {
-            var filelist = String(data).split(',');
-            for (var i = 0, l = filelist.length; i < l; i++) {
+        $http.get('examples/examples.json').then(function(response) {
+            var filelist = response.data;
+            for (var i = 0; i < filelist.length; i++) {
                 var contents = filelist[i].split('|');
                 var filename = contents[0], desc = contents[1];
                 $scope.examples.push({id: filename, desc: desc});
             }
-        });
-        response.error(function(data, status, headers, config) {
-            console.error("ajax failed");
+        }, function(error) {
+            console.error("Failed to load examples.json", error);
         });
     };
 
