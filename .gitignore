@@ -1,0 +1,12 @@
+.*
+!.gitignore
+node_modules/*
+ASMSimulator.iml
+*~
+*.new
+*.old
+after.txt
+cucu-cc
+
+*.o
+*.pyc
