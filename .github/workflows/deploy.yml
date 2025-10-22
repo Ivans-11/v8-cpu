@@ -36,12 +36,18 @@ jobs:
           php scandir.php > examples.json
           cd ..
       
-      - name: Others
+      - name: Prepare deploy directory
         run: |
           rm assets/.gitignore
+          mkdir deploy
+          cp index.html deploy/
+          cp instruction-set.html deploy/
+          cp favicon.ico deploy/
+          cp -r assets deploy/
+          cp -r examples deploy/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: ./deploy
