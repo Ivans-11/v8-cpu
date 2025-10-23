@@ -27,8 +27,9 @@ class CucuVM:
 				self.dump()
 
 	def compile(self, src):
-		p = subprocess.Popen(self.CUCU_PATH, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-		self.code = p.communicate(input=src)[0].replace('\r\n', '\n')
+		p = subprocess.Popen(self.CUCU_PATH, stdout=subprocess.PIPE, stdin=subprocess.PIPE, text=False)
+		out, _ = p.communicate(input=src)
+		self.code = out.decode('utf-8').replace('\r\n', '\n')
 
 	def getint(self, addr):
 		return self.mem[addr] + self.mem[addr+1] * 256
@@ -37,7 +38,7 @@ class CucuVM:
 		self.mem[addr+1] = (n & 0xff00) >> 8
 
 	def step(self):
-		op = (self.code[self.PC:self.PC+8]).decode('ascii')
+		op = (self.code[self.PC:self.PC+8])
 		#op = op.replace('\n','')
 		#op = op.replace('\r','')
 		#op = op.replace(' ', '')
@@ -125,6 +126,6 @@ class CucuVM:
 			print("UNKNOWN OPERATOR STRING: " + op)
 
 	def dump(self):
-		print("A:%04x  B:%04x   PC:%x  SP:%x" % (self.A, self.B, self.PC, self.SP))
+		print(f"A:{self.A:04x}  B:{self.B:04x}   PC:{self.PC:x}  SP:{self.SP:x}")
 		print("Mem:", self.mem)
 		print()
