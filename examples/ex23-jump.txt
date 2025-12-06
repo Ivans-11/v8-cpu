@@ -5,12 +5,12 @@
 ;
 ; The following program does not meet the above requirements. Try correcting it.
 
-2010
+200B
 2101
 2C00
 2201
 B210
 5CC2
 5221
-B006
+B008
 C000
